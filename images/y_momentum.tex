@@ -1,0 +1,31 @@
+\begin{verbatim}
+DMStagStencil row,col[11];
+PetscScalar   valA[11];
+
+row.i     = ex  ; row.j     = ey  ; row.loc     = DOWN;     row.c     = 0;
+col[0].i  = ex  ; col[0].j  = ey  ; col[0].loc  = DOWN;     col[0].c  = 0;
+col[1].i  = ex  ; col[1].j  = ey-1; col[1].loc  = DOWN;     col[1].c  = 0;
+col[2].i  = ex  ; col[2].j  = ey+1; col[2].loc  = DOWN;     col[2].c  = 0;
+col[3].i  = ex-1; col[3].j  = ey  ; col[3].loc  = DOWN;     col[3].c  = 0;
+col[4].i  = ex+1; col[4].j  = ey  ; col[4].loc  = DOWN;     col[4].c  = 0;
+col[5].i  = ex  ; col[5].j  = ey-1; col[5].loc  = LEFT;     col[5].c  = 0;
+col[6].i  = ex  ; col[6].j  = ey-1; col[6].loc  = RIGHT;    col[6].c  = 0;
+col[7].i  = ex  ; col[7].j  = ey  ; col[7].loc  = LEFT;     col[7].c  = 0;
+col[8].i  = ex  ; col[8].j  = ey  ; col[8].loc  = RIGHT;    col[8].c  = 0;
+col[9].i  = ex  ; col[9].j  = ey-1; col[9].loc  = ELEMENT;  col[9].c  = 0;
+col[10].i = ex  ; col[10].j = ey  ; col[10].loc = ELEMENT; col[10].c  = 0;
+
+valA[0]  = -2.0 * (etaDown + etaUp) / (hy*hy) - (etaLeft + etaRight) /(hx*hx);
+valA[1]  =  2.0 * etaDown  / (hy*hy);
+valA[2]  =  2.0 * etaUp    / (hy*hy);
+valA[3]  =        etaLeft  / (hx*hx);
+valA[4]  =        etaRight / (hx*hx);
+valA[5]  =        etaLeft  / (hx*hy);
+valA[6]  = -      etaRight / (hx*hy);
+valA[7]  =        etaRight / (hx*hy);
+valA[8]  = -      etaRight / (hx*hy);
+valA[9]  =  ctx->Kcont / hy;
+valA[10] = -ctx->Kcont / hy;
+ierr = DMStagMatSetValuesStencil(dmSol,A,1,&row,11,col,valA,INSERT_VALUES);CHKERRQ(ierr);
+ierr = DMStagVecSetValuesStencil(dmSol,rhs,1,&row,&valRhs,INSERT_VALUES);CHKERRQ(ierr);
+\end{verbatim}
