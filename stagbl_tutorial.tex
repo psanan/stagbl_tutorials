@@ -703,18 +703,18 @@ ierr = DMRestoreLocalVector(dmStokes,&stokesLocal);CHKERRQ(ierr);
 \begin{itemize}
   \item Direct array access often very efficient (no \lstinline{VecSetValues()} overhead, can apply complex kernels, etc.) and even readable.
 \item Local vectors have an integral numbers of entries/element
-\item Access with \lstinline{DMStagVecGetArrayDOF()} and friends
+\item Access with \lstinline{DMStagVecGetArray()} and friends
 \item Use helper functions to determine which indices to use
   \begin{lstlisting}[language=C,basicstyle=\scriptsize\ttfamily]
 PetscScalar ****arr;
 PetscInt    ivx;
 /* ... */
 DMStagGetLocationSlot(dm,DMSTAG_RIGHT,0,&ivx);
-DMStagVecGetArrayDOF(dm,vecLocal,&arr);
+DMStagVecGetArray(dm,vec_local,&arr);
 /* ... */
-array[k][j][i][ivx] = computeXVelocity();
+arr[k][j][i][ivx] = computeXVelocity();
 /* ... */
-DMStagVecRestoreArrayDOF(dm,vec,&arr);
+DMStagVecRestoreArray(dm,vec_local,&arr);
 \end{lstlisting}
 \item Note that in the above snippet, \lstinline{ivx} has a gridsize-dependent value!
 \end{itemize}
